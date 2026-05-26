@@ -12,28 +12,38 @@ def calculate_bmi():
         height=float(height_text)
         bmi = weight / (height*height)
         bmi = round(bmi, 2)
+        progress_value = 0.0
 
         if bmi < 18.5:
             status= "Under weight"
             color="orange"
+            progress_value = 0.25
         elif bmi >=18.5 and bmi <= 24.9:
             status="Healthy"
             color="green"
+            progress_value = 0.50
         elif bmi >=25 and bmi <= 29.9:
             status="over weight"
             color="Orange"
+            progress_value = 0.75
         else:
             status="You are fat"
             color="red"
-        result_label.configure(text="Your BMI is :" + str(bmi) + "Status: " + status, text_color=color)
+            progress_value = 1.0
+        result_label.configure(text="Your BMI is: " + str(bmi) + "\nStatus: " + status, text_color=color)
+        
+        progress_bar.set(progress_value)
+        progress_bar.configure(progress_color=color)
+        
     except ValueError:
         result_label.configure(text="Error", text_color="red")
+        progress_bar.set(0)
 
 window=ctk.CTk()
 window.title("BMI Calculator Pro")
 
 window.iconbitmap("E:\\work\\python\\BMI_Cal\\pp_icon.ico")
-window.geometry("600x350")
+window.geometry("700x550")
 
 
 title_label=ctk.CTkLabel(window, text="BMI calculator", font=("Arial",24,"bold"))
@@ -54,5 +64,9 @@ calc_button.pack(pady=30)
 
 result_label = ctk.CTkLabel(window, text="Result is here.", font=("Arial", 16))
 result_label.pack(pady=10)
+
+progress_bar= ctk.CTkProgressBar(window, width=300, height=15, corner_radius=10)
+progress_bar.pack(pady=(0, 15))
+progress_bar.set(0)
 
 window.mainloop()
